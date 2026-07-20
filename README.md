@@ -157,6 +157,7 @@ The management team requires a detailed analysis of both OTT Platform to support
 
 
 **1. Data Collection:** Import datasets into MySQL
+
 **2. Data Processing:**
 
    * Data validation
