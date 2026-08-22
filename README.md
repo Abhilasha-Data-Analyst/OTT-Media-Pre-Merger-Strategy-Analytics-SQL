@@ -221,10 +221,11 @@ SELECT
 &#x20;   COUNT(DISTINCT content\_type) AS unique\_content\_types,
 
 &#x20;   COUNT(DISTINCT language) AS unique\_languages
+
 FROM jotstar\_db.contents;
 
 #### **SQL Script LioCinema:**
-#####
+##### 
 SELECT
 
 &#x20;   COUNT(DISTINCT content\_id) AS unique\_content\_ids,
@@ -232,6 +233,7 @@ SELECT
 &#x20;   COUNT(DISTINCT content\_type) AS unique\_content\_types,
 
 &#x20;   COUNT(DISTINCT language) AS unique\_languages
+
 FROM liocinema\_db.contents;
 
 #### Data Driven Insights: 🎬 2. Jotstar Built a Stronger Content Ecosystem
@@ -254,9 +256,7 @@ FROM liocinema\_db.contents;
 
 ##### **1) Work on AGE GROUP:**
 #####
-SELECT 
-
-&#x20;   age\_group,
+SELECT age\_group,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user,
 
@@ -265,12 +265,13 @@ SELECT
 &#x20;   (SELECT COUNT(DISTINCT user\_id) 
 
 &#x20;   FROM jotstar\_db.subscribers),2) AS age\_group\_user\_percentage
+
 FROM jotstar\_db.subscribers
+
 GROUP BY age\_group;
 
 ##### **2)Work on City Tier:**
-SELECT 
-&#x20;   city\_tier,
+SELECT city\_tier,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_city\_tier,
 
@@ -279,57 +280,79 @@ SELECT
 &#x20;   (SELECT COUNT(DISTINCT user\_id) 
 
 &#x20;   FROM jotstar\_db.subscribers),2) AS city\_tier\_user\_percentage
+
 FROM jotstar\_db.subscribers
+
 GROUP BY city\_tier;
 
 
 ##### **3)Work Subscription Plan:**
-SELECT 
-&#x20;   subscription\_plan,
+SELECT subscription\_plan,
+
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_subscription\_plan,
+
 &#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
+
 &#x20;   (SELECT COUNT(DISTINCT user\_id) 
+
 &#x20;   FROM jotstar\_db.subscribers),2) AS subscription\_plan\_user\_percentage
+
 FROM jotstar\_db.subscribers
+
 GROUP BY subscription\_plan;
 
 
 #### **SQL Script LioCinema:**
 ##### **1) Work on AGE GROUP:**
 
-SELECT 
-&#x20;   age\_group,
+SELECT age\_group,
+
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user,
+
 &#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
+
 &#x20;   (SELECT COUNT(DISTINCT user\_id) 
+
 &#x20;   FROM liocinema\_db.subscribers),2) AS age\_group\_user\_percentage
+
 FROM liocinema\_db.subscribers
+
 GROUP BY age\_group;
 
 ##### 
 
 ##### **2)Work on City Tier:**
 
-SELECT 
-&#x20;   city\_tier,
+SELECT city\_tier,
+
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_city\_tier,
+
 &#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
+
 &#x20;   (SELECT COUNT(DISTINCT user\_id) 
+
 &#x20;   FROM liocinema\_db.subscribers),2) AS city\_tier\_user\_percentage
+
 FROM liocinema\_db.subscribers
+
 GROUP BY city\_tier;
 
 ##### 
 
 ##### **3)Work Subscription Plan:**
 
-SELECT 
-&#x20;   subscription\_plan,
+SELECT subscription\_plan,
+
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_subscription\_plan,
+
 &#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
+
 &#x20;   (SELECT COUNT(DISTINCT user\_id) 
+
 &#x20;   FROM liocinema\_db.subscribers),2) AS subscription\_plan\_user\_percentage
+
 FROM liocinema\_db.subscribers
+
 GROUP BY subscription\_plan;
 
 
@@ -351,32 +374,52 @@ GROUP BY subscription\_plan;
 #### **SQL Script Jotstar:**
 ##### **(1) Active vs. Inactive Users (Overall)**
 SELECT
+
 COUNT(DISTINCT user\_id),
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END) AS inactive\_users,
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END)\*100.0 / COUNT(DISTINCT user\_id), 2) AS active\_pct
+
 FROM jotstar\_db.subscribers;
 
 ##### **(2) Rates vary by age group**
 SELECT
+
 age\_group,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END) AS inactive\_users,
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END)\*100.0/COUNT(DISTINCT user\_id),2) AS active\_pct,
+
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END)\*100.0/COUNT(DISTINCT user\_id),2) AS inactive\_pct
+
 FROM jotstar\_db.subscribers
+
 GROUP BY age\_group
+
 ORDER BY age\_group;
 
 ##### **(3) Rates vary by subscription plan**
-SELECT
-subscription\_plan,
+SELECT subscription\_plan,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END) AS inactive\_users,
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END)\*100.0/COUNT(DISTINCT user\_id),2) AS active\_pct,
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END)\*100.0 /COUNT(DISTINCT user\_id),2) AS inactive\_pct
+
 FROM jotstar\_db.subscribers
+
 GROUP BY subscription\_plan
+
 ORDER BY subscription\_plan;
 
 #### 
@@ -384,37 +427,53 @@ ORDER BY subscription\_plan;
 
 ##### **(1) Active vs. Inactive Users (Overall)**
 SELECT
+
 COUNT(DISTINCT user\_id),
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END) AS inactive\_users,
-ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id 
-END) \* 100.0 / COUNT(DISTINCT user\_id), 2) AS active\_pct
+
+ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) \* 100.0 / COUNT(DISTINCT user\_id), 2) AS active\_pct
+
 FROM liocinema\_db.subscribers;
 
 
 ##### **(2) Rates vary by age group**
-SELECT
-age\_group,
+SELECT age\_group,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END) AS inactive\_users,
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END)\*100.0/COUNT(DISTINCT user\_id),2) AS active\_pct,
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END)\* 100.0/COUNT(DISTINCT user\_id),2) AS inactive\_pct
+
 FROM liocinema\_db.subscribers
+
 GROUP BY age\_group
+
 ORDER BY age\_group;
 
 
 
 ##### **(3) Rates vary by subscription plan:**
 
-SELECT
-subscription\_plan,
+SELECT subscription\_plan,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
+
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END) AS inactive\_users,
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END)\*100.0/COUNT(DISTINCT user\_id), 2) AS active\_pct,
+
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END)\* 100.0/COUNT(DISTINCT user\_id), 2)AS inactive\_pct
+
 FROM liocinema\_db.subscribers
+
 GROUP BY subscription\_plan
+
 ORDER BY subscription\_plan;
 
 
@@ -435,51 +494,72 @@ ORDER BY subscription\_plan;
 #### **SQL Script Jotstar:**
 ##### **(1) Overall Average Watchtime**
 SELECT 
+
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
+
 ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
+
 FROM jotstar\_db.content\_consumption;
 
 ##### **(2)** **Average Watchtime by Device Type**
-SELECT 
-device\_type,
+SELECT device\_type,
+
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
+
 ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
+
 FROM jotstar\_db.content\_consumption
+
 GROUP BY device\_type;
 
 ##### **(3)** **Average Watchtime by City Tier**
-SELECT 
-s.city\_tier,
+SELECT s.city\_tier,
+
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
+
 ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
+
 FROM jotstar\_db.content\_consumption c
+
 JOIN jotstar\_db.subscribers s
+
 ON s.user\_id=c.user\_id
+
 GROUP BY city\_tier;
 
 #### **SQL Script LioCinema:**
 ##### **(1) Overall Average Watchtime**
 SELECT
+
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
+
 ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
+
 FROM liocinema\_db.content\_consumption;
 
 ##### **(2)** **Average Watchtime by Device Type**
-SELECT
-device\_type,
+SELECT device\_type,
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
+
 ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
+
 FROM liocinema\_db.content\_consumption
+
 GROUP BY device\_type;
 
 ##### **(3)** **Average Watchtime by City Tier**
-SELECT
-s.city\_tier,
+SELECT s.city\_tier,
+
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
+
 ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
+
 FROM liocinema\_db.content\_consumption c
+
 JOIN liocinema\_db.subscribers s
+
 ON s.user\_id=c.user\_id
+
 GROUP BY city\_tier;
 
 
@@ -500,31 +580,49 @@ GROUP BY city\_tier;
 
 #### **SQL Script Jotstar:**
 SELECT 
-&#x20;   COUNT(\*) AS total\_users,
-&#x20;   ROUND(AVG(total\_watch\_time\_mins) / 60, 2) AS avg\_watch\_time\_hours,
-&#x20;   SUM(CASE WHEN last\_active\_date IS NULL THEN 1 ELSE 0 END) AS active\_users,
-&#x20;   SUM(CASE WHEN last\_active\_date IS NOT NULL THEN 1 ELSE 0 END) AS inactive\_users
+
+COUNT(\*) AS total\_users,
+
+ROUND(AVG(total\_watch\_time\_mins) / 60, 2) AS avg\_watch\_time\_hours,
+
+SUM(CASE WHEN last\_active\_date IS NULL THEN 1 ELSE 0 END) AS active\_users,
+
+SUM(CASE WHEN last\_active\_date IS NOT NULL THEN 1 ELSE 0 END) AS inactive\_users
+
 FROM (SELECT s.user\_id,
+
 &#x20;     SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins, s.last\_active\_date
+
 &#x20;   FROM jotstar\_db.content\_consumption c 
+
 &#x20;   JOIN jotstar\_db.subscribers s
+
 &#x20;       ON c.user\_id = s.user\_id
+
 &#x20;   GROUP BY s.user\_id, s.last\_active\_date) t;
 
 
 
 ###### **(\*)Correlation** 
 SELECT
+
 &#x20; ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins)\*AVG(inactivity\_flag))/
+
 &#x20;     (STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value
+
 FROM(SELECT s.user\_id,
+
 &#x20;    SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins,
+
 &#x20;     CASE 
 &#x20;         WHEN s.last\_active\_date IS NOT NULL THEN 1 ELSE 0 
 &#x20;     END AS inactivity\_flag
+
 &#x20;   FROM jotstar\_db.content\_consumption c 
+
 &#x20;   JOIN jotstar\_db.subscribers s
 &#x20;       ON c.user\_id = s.user\_id
+
 &#x20;   GROUP BY s.user\_id, s.last\_active\_date) t;
 
 
@@ -532,33 +630,46 @@ FROM(SELECT s.user\_id,
 #### **SQL Script LioCinema:**
 SELECT 
 &#x20;   COUNT(\*) AS total\_users,
+
 &#x20;   ROUND(AVG(total\_watch\_time\_mins) / 60, 2) AS avg\_watch\_time\_hours,
+
 &#x20;   SUM(CASE WHEN last\_active\_date IS NULL THEN 1 ELSE 0 END) AS active\_users,
-&#x20;   SUM(CASE WHEN last\_active\_date IS NOT NULL THEN 1 ELSE 0 END) AS inactive\_users
-FROM (SELECT s.user\_id,
+
+&#x20;   SUM(CASE WHEN last\_active\_date IS NOT NULL THEN 1 ELSE 0 END) AS inactive\_users FROM (SELECT s.user\_id,
+
 &#x20;     SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins, s.last\_active\_date
+
 &#x20;   FROM liocinema\_db.content\_consumption c 
+
 &#x20;   JOIN liocinema\_db.subscribers s
+
 &#x20;   ON c.user\_id = s.user\_id
+
 &#x20;   GROUP BY s.user\_id, s.last\_active\_date) t;
 
 
 
 ###### **(\*)Correlation**
 SELECT 
+
 &#x20; ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins) \* AVG(inactivity\_flag))/
+
 &#x20; (STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value FROM(SELECT s.user\_id,
+
 &#x20;     SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins,
+
 &#x20;     CASE 
 &#x20;     WHEN s.last\_active\_date IS NOT NULL THEN 1 ELSE 0 
 &#x20;     END AS inactivity\_flag
+
 &#x20;     FROM liocinema\_db.content\_consumption c 
+
 &#x20;     JOIN liocinema\_db.subscribers s
 &#x20;     ON c.user\_id = s.user\_id
+
 &#x20;     GROUP BY s.user\_id, s.last\_active\_date) t;
 
-### **Data Driven Insights
-:🔄 6. Low Engagement Increases Churn Risk
+### **Data Driven Insights:🔄 6. Low Engagement Increases Churn Risk
 
 * Correlation analysis examined the relationship between watch time and inactivity.
 * Results:showing a moderate inverse relationship
@@ -574,42 +685,48 @@ SELECT
 ### **Q7. Downgrade Trends-How do downgrade trends differ between LioCinema and Jotstar? Are downgrades more prevalent on one platform compared to the other?** 
 
 #### **SQL Script Jotstar:**
-SELECT
-&#x20;   subscription\_plan AS from\_plan,
+SELECT subscription\_plan AS from\_plan,
+
 &#x20;   new\_subscription\_plan AS to\_plan,
+
 &#x20;   COUNT(DISTINCT user\_id) AS downgrade\_users FROM jotstar\_db.subscribers
+
 WHERE plan\_change\_date IS NOT NULL
+
 &#x20;   AND (&#x20(subscription\_plan = 'VIP' AND new\_subscription\_plan IN ('Premium','Free'))
+
 &#x20;       OR (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Free') &#x20;   )
-GROUP BY
-&#x20;   subscription\_plan,
-&#x20;   new\_subscription\_plan
-ORDER BY
-&#x20;   downgrade\_users DESC**;**
+
+GROUP BY subscription\_plan, new\_subscription\_plan
+
+ORDER BY downgrade\_users DESC**;**
 
 #### 
 
 #### **SQL Script LioCinema:**
-SELECT
-&#x20;   subscription\_plan AS from\_plan,
-&#x20;   new\_subscription\_plan AS to\_plan,
-&#x20;   COUNT(DISTINCT user\_id) AS downgrade\_users
+SELECT subscription\_plan AS from\_plan,
+
+new\_subscription\_plan AS to\_plan,
+
+COUNT(DISTINCT user\_id) AS downgrade\_users
+
 FROM liocinema\_db.subscribers
+
 WHERE plan\_change\_date IS NOT NULL
+
 &#x20;   AND (
+
 &#x20;       (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Basic')
+
 &#x20;       OR (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Free')
-&#x20;       OR (subscription\_plan = 'Basic' AND new\_subscription\_plan = 'Free')
-&#x20;   )
-GROUP BY
-&#x20;   subscription\_plan,
-&#x20;   new\_subscription\_plan
-ORDER BY
-&#x20;   downgrade\_users DESC;
+
+&#x20;       OR (subscription\_plan = 'Basic' AND new\_subscription\_plan = 'Free'))
+
+GROUP BY subscription\_plan, new\_subscription\_plan
+ORDER BY downgrade\_users DESC;
 
 
-### **Data Driven Insights:
-📉 7. LioCinema Faces Higher Downgrade Pressure
+### **Data Driven Insights: 📉 7. LioCinema Faces Higher Downgrade Pressure
 
 * Subscription analysis revealed significant differences in downgrade behavior.
 * LioCinema:
@@ -625,35 +742,30 @@ ORDER BY
 
 ### **Q8. Upgrade Patterns-What are the most common upgrade transitions (e.g., Free to Basic, Free to VIP, Free to Premium)for LioCinema and Jotstar? How do these differ across platforms?**
 
-
-
 #### **SQL Script Jotstar:**
-SELECT
-&#x20;   subscription\_plan AS from\_plan,
-&#x20;   new\_subscription\_plan AS to\_plan,
-&#x20;   COUNT(DISTINCT user\_id) AS users\_upgraded,
-&#x20;   ROUND(
-&#x20;       COUNT(DISTINCT user\_id) \* 100.0 /
-&#x20;       SUM(COUNT(DISTINCT user\_id)) OVER (),
-&#x20;       2
-&#x20;   ) AS upgrade\_percentage
+SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
+
+COUNT(DISTINCT user\_id) AS users\_upgraded,
+
+ROUND(COUNT(DISTINCT user\_id) \* 100.0 /SUM(COUNT(DISTINCT user\_id)) OVER (),2) AS upgrade\_percentage
+
 FROM jotstar\_db.subscribers
+
 WHERE plan\_change\_date IS NOT NULL
-&#x20;   AND (
-&#x20;       (subscription\_plan = 'Free' AND new\_subscription\_plan IN ('VIP','Premium'))
-&#x20;       OR
-&#x20;       (subscription\_plan = 'VIP' AND new\_subscription\_plan = 'Premium')
-&#x20;   )
-GROUP BY
-&#x20;   subscription\_plan,
-&#x20;   new\_subscription\_plan
+
+AND ((subscription\_plan = 'Free' AND new\_subscription\_plan IN ('VIP','Premium'))
+
+OR(subscription\_plan = 'VIP' AND new\_subscription\_plan = 'Premium'))
+
+GROUP BY subscription\_plan, new\_subscription\_plan
+
 ORDER BY users\_upgraded DESC;
 
 #### **SQL Script LioCinema:**
-SELECT
-&#x20;   subscription\_plan AS from\_plan,
-&#x20;   new\_subscription\_plan AS to\_plan,
-&#x20;   COUNT(DISTINCT user\_id) AS users\_upgraded,
+SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
+
+COUNT(DISTINCT user\_id) AS users\_upgraded,
+
 &#x20;   ROUND(
 &#x20;       COUNT(DISTINCT user\_id) \* 100.0 /
 &#x20;       SUM(COUNT(DISTINCT user\_id)) OVER (),
@@ -671,8 +783,7 @@ GROUP BY
 &#x20;   new\_subscription\_plan
 ORDER BY users\_upgraded DESC;
 
-### **Data Driven Insights:📈 
-8. Jotstar Shows Strong Premium Adoption**
+### **Data Driven Insights:📈 8. Jotstar Shows Strong Premium Adoption**
 * Upgrade analysis highlighted differences in customer willingness to pay.
 * Jotstar:
   1. Free → VIP = 844 Users
