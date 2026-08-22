@@ -220,14 +220,15 @@ FROM jotstar\_db.contents;
 
 #### **SQL Script LioCinema:**
 SELECT
+
 &#x20;   COUNT(DISTINCT content\_id) AS unique\_content\_ids,
+
 &#x20;   COUNT(DISTINCT content\_type) AS unique\_content\_types,
+
 &#x20;   COUNT(DISTINCT language) AS unique\_languages
 FROM liocinema\_db.contents;
 
-### **Data Driven Insights:
-🎬 2. Jotstar Built a Stronger Content Ecosystem
-
+#### ** Data Driven Insights: 🎬 2. Jotstar Built a Stronger Content Ecosystem
 * Content library analysis revealed that Jotstar offers significantly broader content coverage.
 * Key Metrics:
   1. Jotstar Content → 2,360
