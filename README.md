@@ -343,7 +343,7 @@ GROUP BY subscription\_plan;
 
 
 
-### **Data Driven Insights: 👨‍👩‍👧 3. Both Platforms Attract Different Customer Segments.
+### Data Driven Insights: 👨‍👩‍👧 3. Both Platforms Attract Different Customer Segments.
 
 * Subscriber demographics showed clear differences in audience composition.
 * Jotstar: Largest Age Group → 25–34 Years (45%)
@@ -371,9 +371,7 @@ ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END)\*10
 FROM jotstar\_db.subscribers;
 
 ##### **(2) Rates vary by age group**
-SELECT
-
-age\_group,
+SELECT age\_group,
 
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
 
@@ -461,7 +459,7 @@ GROUP BY subscription\_plan
 ORDER BY subscription\_plan;
 
 
-### **Data Driven Insights: 📈 4. Jotstar Demonstrates Stronger User Engagement
+### Data Driven Insights: 📈 4. Jotstar Demonstrates Stronger User Engagement
 
 * User activity analysis revealed higher engagement levels on Jotstar.
 * Key Metrics:
@@ -545,7 +543,7 @@ ON s.user\_id=c.user\_id
 GROUP BY city\_tier;
 
 
-### **Data Driven Insights: 📺 5. Jotstar Users Consume More Content
+### Data Driven Insights: 📺 5. Jotstar Users Consume More Content
 
 * Watch time analysis showed substantial differences in content consumption.
 * Average Watch Time:
@@ -583,7 +581,7 @@ GROUP BY s.user\_id, s.last\_active\_date) t;
 
 
 
-###### **(\*)Correlation** 
+##### **(\*)Correlation** 
 SELECT
 
 ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins)\*AVG(inactivity\_flag))/STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value
@@ -592,22 +590,20 @@ FROM(SELECT s.user\_id,
 
 SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins,
 
-CASE 
-WHEN s.last\_active\_date IS NOT NULL THEN 1 ELSE 0 
-END AS inactivity\_flag
+CASE WHEN s.last\_active\_date IS NOT NULL THEN 1 ELSE 0 END AS inactivity\_flag
 
-&#x20;   FROM jotstar\_db.content\_consumption c 
+FROM jotstar\_db.content\_consumption c 
 
-&#x20;   JOIN jotstar\_db.subscribers s
-&#x20;       ON c.user\_id = s.user\_id
+JOIN jotstar\_db.subscribers s
+ON c.user\_id = s.user\_id
 
-&#x20;   GROUP BY s.user\_id, s.last\_active\_date) t;
+GROUP BY s.user\_id, s.last\_active\_date) t;
 
 
 
 #### **SQL Script LioCinema:**
 SELECT 
-&#x20;   COUNT(\*) AS total\_users,
+COUNT(\*) AS total\_users,
 
 &#x20;   ROUND(AVG(total\_watch\_time\_mins) / 60, 2) AS avg\_watch\_time\_hours,
 
@@ -629,22 +625,20 @@ ON c.user\_id = s.user\_id
 ###### **(\*)Correlation**
 SELECT 
 
-&#x20; ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins) \* AVG(inactivity\_flag))/(STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value FROM(SELECT s.user\_id,
+ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins) \* AVG(inactivity\_flag))/(STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value FROM(SELECT s.user\_id,
 
-&#x20;     SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins,
+SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins,
 
-&#x20;     CASE 
-&#x20;     WHEN s.last\_active\_date IS NOT NULL THEN 1 ELSE 0 
-&#x20;     END AS inactivity\_flag
+CASE WHEN s.last\_active\_date IS NOT NULL THEN 1 ELSE 0 END AS inactivity\_flag
 
-&#x20;     FROM liocinema\_db.content\_consumption c 
+FROM liocinema\_db.content\_consumption c 
 
 &#x20;     JOIN liocinema\_db.subscribers s
 &#x20;     ON c.user\_id = s.user\_id
 
 &#x20;     GROUP BY s.user\_id, s.last\_active\_date) t;
 
-### **Data Driven Insights:🔄 6. Low Engagement Increases Churn Risk
+### Data Driven Insights:🔄 6. Low Engagement Increases Churn Risk
 
 * Correlation analysis examined the relationship between watch time and inactivity.
 * Results:showing a moderate inverse relationship
@@ -664,11 +658,7 @@ SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
 
 &#x20;   COUNT(DISTINCT user\_id) AS downgrade\_users FROM jotstar\_db.subscribers
 
-WHERE plan\_change\_date IS NOT NULL
-
-&#x20;   AND (&#x20(subscription\_plan = 'VIP' AND new\_subscription\_plan IN ('Premium','Free'))
-
-&#x20;       OR (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Free') &#x20;   )
+WHERE plan\_change\_date IS NOT NULL AND (&#x20(subscription\_plan = 'VIP' AND new\_subscription\_plan IN ('Premium','Free')) OR (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Free'))
 
 GROUP BY subscription\_plan, new\_subscription\_plan
 
@@ -683,20 +673,14 @@ COUNT(DISTINCT user\_id) AS downgrade\_users
 
 FROM liocinema\_db.subscribers
 
-WHERE plan\_change\_date IS NOT NULL
-
-&#x20;   AND ((subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Basic')
-
-OR (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Free')
-
-OR (subscription\_plan = 'Basic' AND new\_subscription\_plan = 'Free'))
+WHERE plan\_change\_date IS NOT NULL AND ((subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Basic')OR (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Free') OR (subscription\_plan = 'Basic' AND new\_subscription\_plan = 'Free'))
 
 GROUP BY subscription\_plan, new\_subscription\_plan
 
 ORDER BY downgrade\_users DESC;
 
 
-### **Data Driven Insights: 📉 7. LioCinema Faces Higher Downgrade Pressure
+### Data Driven Insights: 📉 7. LioCinema Faces Higher Downgrade Pressure
 
 * Subscription analysis revealed significant differences in downgrade behavior.
 * LioCinema:
@@ -746,7 +730,7 @@ GROUP BY subscription\_plan, new\_subscription\_plan
 
 ORDER BY users\_upgraded DESC;
 
-### **Data Driven Insights:📈 8. Jotstar Shows Strong Premium Adoption**
+### Data Driven Insights:📈 8. Jotstar Shows Strong Premium Adoption**
 * Upgrade analysis highlighted differences in customer willingness to pay.
 * Jotstar:
   1. Free → VIP = 844 Users
@@ -807,7 +791,7 @@ GROUP BY city\_tier
 ORDER BY city\_tier;
 
 #### 
-### **Data Driven Insights:💳9. Jotstar Achieved Better Monetization
+### Data Driven Insights:💳9. Jotstar Achieved Better Monetization
 * Paid user analysis revealed stronger conversion performance for Jotstar.
 * Paid User Percentage:
   1. Jotstar → 72.9%
@@ -822,6 +806,7 @@ ORDER BY city\_tier;
 
 #### **SQL Script Jotstar:**
 **-- STEP 1: Prepare base subscriber data and define effective end date***
+
 WITH base\_data AS (
 
 &#x20;   SELECT user\_id, subscription\_plan, new\_subscription\_plan, subscription\_date, plan\_change\_date, last\_active\_date,
@@ -833,10 +818,12 @@ FROM jotstar\_db.subscribers
 WHERE subscription\_date <= '2024-11-30'),
 
 **-- STEP 2: Split subscription period into before and after plan change**
+
 split\_periods AS (SELECT user\_id, subscription\_plan, new\_subscription\_plan,
 
 **-- Period before plan change or end date**
-&#x20;   GREATEST(subscription\_date, '2024-01-01') AS start\_before,
+
+GREATEST(subscription\_date, '2024-01-01') AS start\_before,
  
 LEAST(COALESCE(plan\_change\_date, effective\_end\_date), effective\_end\_date) AS end\_before,
 
@@ -853,24 +840,18 @@ CASE WHEN start\_after IS NOT NULL AND start\_after < end\_after THEN TIMESTAMPD
 FROM split\_periods)
 
 **-- STEP 4: Calculate total revenue**
+
 SELECT
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_subscribers,
-&#x20;   ROUND((SUM(months\_before\*CASE subscription\_plan
-&#x20;               WHEN 'VIP' THEN 159
-&#x20;               WHEN 'Premium' THEN 359
-&#x20;               ELSE 0
-&#x20;               END) +
 
-&#x20;           SUM(months\_after\*CASE new\_subscription\_plan
-&#x20;               WHEN 'VIP' THEN 159
-&#x20;               WHEN 'Premium' THEN 359
-&#x20;               ELSE 0
-&#x20;               END))/1000000,2) AS total\_revenue\_millions FROM revenue\_calc;
+&#x20;   ROUND((SUM(months\_before\*CASE subscription\_plan WHEN 'VIP' THEN 159 WHEN 'Premium' THEN 359 ELSE 0 END) +
+
+SUM(months\_after\*CASE new\_subscription\_plan WHEN 'VIP' THEN 159 WHEN 'Premium' THEN 359 ELSE 0 END))/1000000,2) AS total\_revenue\_millions FROM revenue\_calc;
 
 #### 
 
-### **Data Driven Insights:* 💰10. Jotstar Generates Higher Revenue Despite Smaller Scale
+### Data Driven Insights 💰10. Jotstar Generates Higher Revenue Despite Smaller Scale
 * Revenue analysis revealed a significant monetization advantage.
 * Key Metrics:
   1. LioCinema Revenue → ₹16.12M
