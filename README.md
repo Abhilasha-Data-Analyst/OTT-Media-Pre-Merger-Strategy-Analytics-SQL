@@ -213,9 +213,13 @@ from liocinema\_db.content\_consumption;
 
 #### **SQL Script Jotstar:**
 SELECT
+
 COUNT(DISTINCT content\_id) AS unique\_content\_ids,
+
 COUNT(DISTINCT content\_type) AS unique\_content\_types,
+
 COUNT(DISTINCT language) AS unique\_languages
+
 FROM jotstar\_db.contents;
 
 #### **SQL Script LioCinema:**
@@ -254,9 +258,7 @@ SELECT age\_group,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user,
 
-&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
-
-&#x20;   (SELECT COUNT(DISTINCT user\_id) 
+&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/(SELECT COUNT(DISTINCT user\_id) 
 
 &#x20;   FROM jotstar\_db.subscribers),2) AS age\_group\_user\_percentage
 
@@ -269,9 +271,7 @@ SELECT city\_tier,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_city\_tier,
 
-&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
-
-&#x20;   (SELECT COUNT(DISTINCT user\_id) 
+&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/(SELECT COUNT(DISTINCT user\_id) 
 
 &#x20;   FROM jotstar\_db.subscribers),2) AS city\_tier\_user\_percentage
 
@@ -285,11 +285,9 @@ SELECT subscription\_plan,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_subscription\_plan,
 
-&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
+&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/(SELECT COUNT(DISTINCT user\_id) 
 
-&#x20;   (SELECT COUNT(DISTINCT user\_id) 
-
-&#x20;   FROM jotstar\_db.subscribers),2) AS subscription\_plan\_user\_percentage
+FROM jotstar\_db.subscribers),2) AS subscription\_plan\_user\_percentage
 
 FROM jotstar\_db.subscribers
 
@@ -303,9 +301,7 @@ SELECT age\_group,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user,
 
-&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
-
-&#x20;   (SELECT COUNT(DISTINCT user\_id) 
+&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/SELECT COUNT(DISTINCT user\_id) 
 
 &#x20;   FROM liocinema\_db.subscribers),2) AS age\_group\_user\_percentage
 
@@ -321,9 +317,7 @@ SELECT city\_tier,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_city\_tier,
 
-&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
-
-&#x20;   (SELECT COUNT(DISTINCT user\_id) 
+&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/(SELECT COUNT(DISTINCT user\_id) 
 
 &#x20;   FROM liocinema\_db.subscribers),2) AS city\_tier\_user\_percentage
 
@@ -339,9 +333,7 @@ SELECT subscription\_plan,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_subscription\_plan,
 
-&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
-
-&#x20;   (SELECT COUNT(DISTINCT user\_id) 
+&#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/(SELECT COUNT(DISTINCT user\_id) 
 
 &#x20;   FROM liocinema\_db.subscribers),2) AS subscription\_plan\_user\_percentage
 
@@ -351,8 +343,7 @@ GROUP BY subscription\_plan;
 
 
 
-### **Data Driven Insights:
-👨‍👩‍👧 3. Both Platforms Attract Different Customer Segments.
+### **Data Driven Insights: 👨‍👩‍👧 3. Both Platforms Attract Different Customer Segments.
 
 * Subscriber demographics showed clear differences in audience composition.
 * Jotstar: Largest Age Group → 25–34 Years (45%)
@@ -389,7 +380,6 @@ COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END) AS inactive\_users,
 
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END)\*100.0/COUNT(DISTINCT user\_id),2) AS active\_pct,
-
 
 ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NOT NULL THEN user\_id END)\*100.0/COUNT(DISTINCT user\_id),2) AS inactive\_pct
 
@@ -471,8 +461,7 @@ GROUP BY subscription\_plan
 ORDER BY subscription\_plan;
 
 
-### **Data Driven Insights:
-📈 4. Jotstar Demonstrates Stronger User Engagement
+### **Data Driven Insights: 📈 4. Jotstar Demonstrates Stronger User Engagement
 
 * User activity analysis revealed higher engagement levels on Jotstar.
 * Key Metrics:
@@ -516,7 +505,6 @@ ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
 FROM jotstar\_db.content\_consumption c
 
 JOIN jotstar\_db.subscribers s
-
 ON s.user\_id=c.user\_id
 
 GROUP BY city\_tier;
@@ -533,6 +521,7 @@ FROM liocinema\_db.content\_consumption;
 
 ##### **(2)** **Average Watchtime by Device Type**
 SELECT device\_type,
+
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
 
 ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
@@ -551,14 +540,12 @@ ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
 FROM liocinema\_db.content\_consumption c
 
 JOIN liocinema\_db.subscribers s
-
 ON s.user\_id=c.user\_id
 
 GROUP BY city\_tier;
 
 
-### **Data Driven Insights:
-📺 5. Jotstar Users Consume More Content
+### **Data Driven Insights: 📺 5. Jotstar Users Consume More Content
 
 * Watch time analysis showed substantial differences in content consumption.
 * Average Watch Time:
@@ -585,32 +572,29 @@ SUM(CASE WHEN last\_active\_date IS NOT NULL THEN 1 ELSE 0 END) AS inactive\_use
 
 FROM (SELECT s.user\_id,
 
-&#x20;     SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins, s.last\_active\_date
+SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins, s.last\_active\_date 
 
-&#x20;   FROM jotstar\_db.content\_consumption c 
+FROM jotstar\_db.content\_consumption c 
 
-&#x20;   JOIN jotstar\_db.subscribers s
+JOIN jotstar\_db.subscribers s
+ON c.user\_id = s.user\_id
 
-&#x20;       ON c.user\_id = s.user\_id
-
-&#x20;   GROUP BY s.user\_id, s.last\_active\_date) t;
+GROUP BY s.user\_id, s.last\_active\_date) t;
 
 
 
 ###### **(\*)Correlation** 
 SELECT
 
-&#x20; ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins)\*AVG(inactivity\_flag))/
-
-&#x20;     (STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value
+ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins)\*AVG(inactivity\_flag))/STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value
 
 FROM(SELECT s.user\_id,
 
-&#x20;    SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins,
+SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins,
 
-&#x20;     CASE 
-&#x20;         WHEN s.last\_active\_date IS NOT NULL THEN 1 ELSE 0 
-&#x20;     END AS inactivity\_flag
+CASE 
+WHEN s.last\_active\_date IS NOT NULL THEN 1 ELSE 0 
+END AS inactivity\_flag
 
 &#x20;   FROM jotstar\_db.content\_consumption c 
 
@@ -631,13 +615,12 @@ SELECT
 
 &#x20;   SUM(CASE WHEN last\_active\_date IS NOT NULL THEN 1 ELSE 0 END) AS inactive\_users FROM (SELECT s.user\_id,
 
-&#x20;     SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins, s.last\_active\_date
+&#x20;   SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins, s.last\_active\_date
 
 &#x20;   FROM liocinema\_db.content\_consumption c 
 
-&#x20;   JOIN liocinema\_db.subscribers s
-
-&#x20;   ON c.user\_id = s.user\_id
+JOIN liocinema\_db.subscribers s
+ON c.user\_id = s.user\_id
 
 &#x20;   GROUP BY s.user\_id, s.last\_active\_date) t;
 
@@ -646,9 +629,7 @@ SELECT
 ###### **(\*)Correlation**
 SELECT 
 
-&#x20; ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins) \* AVG(inactivity\_flag))/
-
-&#x20; (STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value FROM(SELECT s.user\_id,
+&#x20; ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins) \* AVG(inactivity\_flag))/(STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value FROM(SELECT s.user\_id,
 
 &#x20;     SUM(c.total\_watch\_time\_mins) AS total\_watch\_time\_mins,
 
@@ -679,9 +660,7 @@ SELECT
 ### **Q7. Downgrade Trends-How do downgrade trends differ between LioCinema and Jotstar? Are downgrades more prevalent on one platform compared to the other?** 
 
 #### **SQL Script Jotstar:**
-SELECT subscription\_plan AS from\_plan,
-
-&#x20;   new\_subscription\_plan AS to\_plan,
+SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
 
 &#x20;   COUNT(DISTINCT user\_id) AS downgrade\_users FROM jotstar\_db.subscribers
 
@@ -698,9 +677,7 @@ ORDER BY downgrade\_users DESC**;**
 #### 
 
 #### **SQL Script LioCinema:**
-SELECT subscription\_plan AS from\_plan,
-
-new\_subscription\_plan AS to\_plan,
+SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
 
 COUNT(DISTINCT user\_id) AS downgrade\_users
 
@@ -708,15 +685,14 @@ FROM liocinema\_db.subscribers
 
 WHERE plan\_change\_date IS NOT NULL
 
-&#x20;   AND (
+&#x20;   AND ((subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Basic')
 
-&#x20;       (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Basic')
+OR (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Free')
 
-&#x20;       OR (subscription\_plan = 'Premium' AND new\_subscription\_plan = 'Free')
-
-&#x20;       OR (subscription\_plan = 'Basic' AND new\_subscription\_plan = 'Free'))
+OR (subscription\_plan = 'Basic' AND new\_subscription\_plan = 'Free'))
 
 GROUP BY subscription\_plan, new\_subscription\_plan
+
 ORDER BY downgrade\_users DESC;
 
 
@@ -760,21 +736,14 @@ SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
 
 COUNT(DISTINCT user\_id) AS users\_upgraded,
 
-&#x20;   ROUND(
-&#x20;       COUNT(DISTINCT user\_id) \* 100.0 /
-&#x20;       SUM(COUNT(DISTINCT user\_id)) OVER (),
-&#x20;       2
-&#x20;   ) AS upgrade\_percentage
-FROM liocinema\_db.subscribers
+ROUND(COUNT(DISTINCT user\_id) \* 100.0 /SUM(COUNT(DISTINCT user\_id)) OVER (),2) AS upgrade\_percentage FROM liocinema\_db.subscribers
+
 WHERE plan\_change\_date IS NOT NULL
-&#x20;   AND (
-&#x20;       (subscription\_plan = 'Free' AND new\_subscription\_plan IN ('Basic','Premium'))
-&#x20;       OR
-&#x20;       (subscription\_plan = 'Basic' AND new\_subscription\_plan = 'Premium')
-&#x20;   )
-GROUP BY
-&#x20;   subscription\_plan,
-&#x20;   new\_subscription\_plan
+&#x20;   AND ((subscription\_plan = 'Free' AND new\_subscription\_plan IN ('Basic','Premium'))
+&#x20;   OR(subscription\_plan = 'Basic' AND new\_subscription\_plan = 'Premium'))
+
+GROUP BY subscription\_plan, new\_subscription\_plan
+
 ORDER BY users\_upgraded DESC;
 
 ### **Data Driven Insights:📈 8. Jotstar Shows Strong Premium Adoption**
@@ -794,74 +763,51 @@ ORDER BY users\_upgraded DESC;
 ### **Q9. Paid Users Distribution-How does the paid user% age (e.g., Basic, Premium for LioCinema; VIP, Premium for Jotstar) vary across different platforms? Analyse the proportion of premium users in Tier 1, Tier 2, and Tier 3 cities and identify any notable trends or differences.**
 
 #### **SQL Script Jotstar:**
-SELECT 
-&#x20;   city\_tier,
-&#x20;   COUNT(DISTINCT user\_id) AS total\_users,
-&#x20;   COUNT(DISTINCT CASE 
-&#x20;       WHEN subscription\_plan IN ('VIP','Premium') 
-&#x20;       THEN user\_id 
-&#x20;   END) AS paid\_users,
-&#x20;   COUNT(DISTINCT CASE 
-&#x20;       WHEN subscription\_plan = 'VIP' 
-&#x20;       THEN user\_id 
-&#x20;   END) AS vip\_users,
-&#x20;   COUNT(DISTINCT CASE 
-&#x20;       WHEN subscription\_plan = 'Premium' 
-&#x20;       THEN user\_id 
-&#x20;   END) AS premium\_users,
-&#x20;   ROUND(
-&#x20;       COUNT(DISTINCT CASE 
-&#x20;           WHEN subscription\_plan IN ('VIP','Premium') 
-&#x20;           THEN user\_id 
-&#x20;       END) \* 100.0 / COUNT(DISTINCT user\_id), 2
-&#x20;   ) AS paid\_user\_pct,
-&#x20;   ROUND(
-&#x20;       COUNT(DISTINCT CASE 
-&#x20;           WHEN subscription\_plan = 'VIP' 
-&#x20;           THEN user\_id 
-&#x20;       END) \* 100.0 / COUNT(DISTINCT user\_id), 2
-&#x20;   ) AS vip\_pct
+SELECT city\_tier,
+   
+COUNT(DISTINCT user\_id) AS total\_users,
+
+COUNT(DISTINCT CASE WHEN subscription\_plan IN ('VIP','Premium') THEN user\_id END) AS paid\_users,
+
+COUNT(DISTINCT CASE WHEN subscription\_plan = 'VIP' THEN user\_id END) AS vip\_users,
+
+COUNT(DISTINCT CASE WHEN subscription\_plan = 'Premium' THEN user\_id END) AS premium\_users,
+   
+ROUND(COUNT(DISTINCT CASE WHEN subscription\_plan IN ('VIP','Premium') THEN user\_id END) \* 100.0 / COUNT(DISTINCT user\_id), 2) AS paid\_user\_pct,
+
+ROUND(COUNT(DISTINCT CASE WHEN subscription\_plan = 'VIP' THEN user\_id END) \* 100.0 / COUNT(DISTINCT user\_id), 2) AS vip\_pct
+
 FROM jotstar\_db.subscribers
+
 GROUP BY city\_tier
+
 ORDER BY city\_tier;
 
 
 #### **SQL Script LioCinema:**
 
-SELECT 
-&#x20;   city\_tier,
+SELECT city\_tier,
+
 &#x20;   COUNT(DISTINCT user\_id) AS total\_users,
-&#x20;   COUNT(DISTINCT CASE 
-&#x20;       WHEN subscription\_plan IN ('Basic','Premium') 
-&#x20;       THEN user\_id 
-&#x20;   END) AS paid\_users,
-&#x20;   COUNT(DISTINCT CASE 
-&#x20;       WHEN subscription\_plan = 'Premium' 
-&#x20;       THEN user\_id 
-&#x20;   END) AS premium\_users,
-&#x20;   COUNT(DISTINCT CASE 
-&#x20;       WHEN subscription\_plan = 'Basic' 
-&#x20;       THEN user\_id 
-&#x20;   END) AS basic\_users,
-&#x20;   ROUND(
-&#x20;       COUNT(DISTINCT CASE 
-&#x20;           WHEN subscription\_plan IN ('Basic','Premium') 
-&#x20;           THEN user\_id 
-&#x20;       END) \* 100.0 / COUNT(DISTINCT user\_id), 2
-&#x20;   ) AS paid\_user\_pct,
-&#x20;   ROUND(
-&#x20;       COUNT(DISTINCT CASE 
-&#x20;           WHEN subscription\_plan = 'Premium' 
-&#x20;           THEN user\_id 
-&#x20;       END) \* 100.0 / COUNT(DISTINCT user\_id), 2
-&#x20;   ) AS premium\_pct
+
+&#x20;   COUNT(DISTINCT CASE WHEN subscription\_plan IN ('Basic','Premium') THEN user\_id END) AS paid\_users,
+
+COUNT(DISTINCT CASE WHEN subscription\_plan = 'Premium' THEN user\_id END) AS premium\_users,
+
+COUNT(DISTINCT CASE WHEN subscription\_plan = 'Basic' THEN user\_id END) AS basic\_users,
+
+ROUND(COUNT(DISTINCT CASE WHEN subscription\_plan IN ('Basic','Premium')THEN user\_id END) \* 100.0 / COUNT(DISTINCT user\_id), 2) AS paid\_user\_pct,
+
+ROUND(COUNT(DISTINCT CASE WHEN subscription\_plan = 'Premium' THEN user\_id END) \* 100.0 / COUNT(DISTINCT user\_id), 2) AS premium\_pct
+
 FROM liocinema\_db.subscribers
+
 GROUP BY city\_tier
+
 ORDER BY city\_tier;
 
 #### 
-### **Data Driven Insights:
-* 💳9. Jotstar Achieved Better Monetization
+### **Data Driven Insights:💳9. Jotstar Achieved Better Monetization
 * Paid user analysis revealed stronger conversion performance for Jotstar.
 * Paid User Percentage:
   1. Jotstar → 72.9%
@@ -877,59 +823,45 @@ ORDER BY city\_tier;
 #### **SQL Script Jotstar:**
 **-- STEP 1: Prepare base subscriber data and define effective end date***
 WITH base\_data AS (
-&#x20;   SELECT
-&#x20;       user\_id,
-&#x20;       subscription\_plan,
-&#x20;       new\_subscription\_plan,
-&#x20;       subscription\_date,
-&#x20;       plan\_change\_date,
-&#x20;       last\_active\_date,
-&#x20;       CASE 
-&#x20;           WHEN last\_active\_date IS NULL THEN '2024-11-30'
-&#x20;           ELSE LEAST(last\_active\_date, '2024-11-30')
-&#x20;       END AS effective\_end\_date
-&#x20; FROM jotstar\_db.subscribers
-&#x20; WHERE subscription\_date <= '2024-11-30'),
+
+&#x20;   SELECT user\_id, subscription\_plan, new\_subscription\_plan, subscription\_date, plan\_change\_date, last\_active\_date,
+&#x20;       
+CASE WHEN last\_active\_date IS NULL THEN '2024-11-30' ELSE LEAST(last\_active\_date, '2024-11-30')END AS effective\_end\_date 
+
+FROM jotstar\_db.subscribers
+
+WHERE subscription\_date <= '2024-11-30'),
 
 **-- STEP 2: Split subscription period into before and after plan change**
-split\_periods AS (SELECT
-&#x20;       user\_id,
-&#x20;       subscription\_plan,
-&#x20;       new\_subscription\_plan,
+split\_periods AS (SELECT user\_id, subscription\_plan, new\_subscription\_plan,
 
 **-- Period before plan change or end date**
 &#x20;   GREATEST(subscription\_date, '2024-01-01') AS start\_before,
-&#x20;    LEAST(COALESCE(plan\_change\_date, effective\_end\_date), effective\_end\_date) AS end\_before,
+ 
+LEAST(COALESCE(plan\_change\_date, effective\_end\_date), effective\_end\_date) AS end\_before,
 
 **-- Period after plan change**
-&#x20;   plan\_change\_date AS start\_after,
-&#x20;   effective\_end\_date AS end\_after
-FROM base\_data),
+plan\_change\_date AS start\_after, effective\_end\_date AS end\_after FROM base\_data),
 
 **-- STEP 3: Calculate duration (in months) spent in each plan**
 revenue\_calc AS(SELECT user\_id,
-&#x20;CASE 
-&#x20;WHEN start\_before < end\_before
-&#x20;THEN TIMESTAMPDIFF(MONTH, start\_before, end\_before) ELSE 0 
-&#x20;END AS months\_before,
-&#x20;
-&#x20;CASE 
-&#x20;WHEN start\_after IS NOT NULL 
-&#x20;AND start\_after < end\_after
-&#x20;THEN TIMESTAMPDIFF(MONTH, start\_after, end\_after) ELSE 0
-&#x20;END AS months\_after,
-&#x20; subscription\_plan,
-&#x20; new\_subscription\_plan
-&#x20; FROM split\_periods)
+
+&#x20;CASE WHEN start\_before < end\_before THEN TIMESTAMPDIFF(MONTH, start\_before, end\_before) ELSE 0 END AS months\_before,
+
+CASE WHEN start\_after IS NOT NULL AND start\_after < end\_after THEN TIMESTAMPDIFF(MONTH, start\_after, end\_after) ELSE 0 END AS months\_after, subscription\_plan, new\_subscription\_plan
+
+FROM split\_periods)
 
 **-- STEP 4: Calculate total revenue**
 SELECT
+
 &#x20;   COUNT(DISTINCT user\_id) AS total\_subscribers,
 &#x20;   ROUND((SUM(months\_before\*CASE subscription\_plan
 &#x20;               WHEN 'VIP' THEN 159
 &#x20;               WHEN 'Premium' THEN 359
 &#x20;               ELSE 0
 &#x20;               END) +
+
 &#x20;           SUM(months\_after\*CASE new\_subscription\_plan
 &#x20;               WHEN 'VIP' THEN 159
 &#x20;               WHEN 'Premium' THEN 359
@@ -938,8 +870,7 @@ SELECT
 
 #### 
 
-### **Data Driven Insights:
-* 💰10. Jotstar Generates Higher Revenue Despite Smaller Scale
+### **Data Driven Insights:* 💰10. Jotstar Generates Higher Revenue Despite Smaller Scale
 * Revenue analysis revealed a significant monetization advantage.
 * Key Metrics:
   1. LioCinema Revenue → ₹16.12M
