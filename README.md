@@ -214,7 +214,9 @@ from liocinema\_db.content\_consumption;
 #### **SQL Script Jotstar:**
 SELECT
 &#x20;   COUNT(DISTINCT content\_id) AS unique\_content\_ids,
+
 &#x20;   COUNT(DISTINCT content\_type) AS unique\_content\_types,
+
 &#x20;   COUNT(DISTINCT language) AS unique\_languages
 FROM jotstar\_db.contents;
 
