@@ -187,14 +187,12 @@ The management team requires a detailed analysis of both OTT Platform to support
 
 
 #### **SQL Script Jotstar:**
-##### 
 select COUNT(DISTINCT user\_id)
 
 from jotstar\_db.content\_consumption;
 
 
 #### **SQL Script LioCinema:**
-##### 
 select COUNT(DISTINCT user\_id)
 
 from liocinema\_db.content\_consumption;
@@ -214,14 +212,10 @@ from liocinema\_db.content\_consumption;
 ### **Q2. Content Library Comparison-What is the total number of contents available on LioCinema vs. Jotstar? How do they differ in terms of language and content type?**
 
 #### **SQL Script Jotstar:**
-#####
 SELECT
-&#x20;   COUNT(DISTINCT content\_id) AS unique\_content\_ids,
-
-&#x20;   COUNT(DISTINCT content\_type) AS unique\_content\_types,
-
-&#x20;   COUNT(DISTINCT language) AS unique\_languages
-
+COUNT(DISTINCT content\_id) AS unique\_content\_ids,
+COUNT(DISTINCT content\_type) AS unique\_content\_types,
+COUNT(DISTINCT language) AS unique\_languages
 FROM jotstar\_db.contents;
 
 #### **SQL Script LioCinema:**
