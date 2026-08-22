@@ -178,7 +178,7 @@ The management team requires a detailed analysis of both OTT Platform to support
 
 
 
-## **7. Key Business Questions \& Data-Driven Insights**
+## **7. Key Business Questions \& Data-Driven Insights with SQL Script**
 
 
 
@@ -187,13 +187,13 @@ The management team requires a detailed analysis of both OTT Platform to support
 
 
 #### **SQL Script Jotstar:**
-select COUNT(DISTINCT user\_id)
+##### select COUNT(DISTINCT user\_id)
 
 from jotstar\_db.content\_consumption;
 
 
 #### **SQL Script LioCinema:**
-select COUNT(DISTINCT user\_id)
+##### select COUNT(DISTINCT user\_id)
 
 from liocinema\_db.content\_consumption;
 
@@ -230,7 +230,7 @@ SELECT
 &#x20;   COUNT(DISTINCT language) AS unique\_languages
 FROM liocinema\_db.contents;
 
-#### ** Data Driven Insights: 🎬 2. Jotstar Built a Stronger Content Ecosystem
+#### Data Driven Insights: 🎬 2. Jotstar Built a Stronger Content Ecosystem
 * Content library analysis revealed that Jotstar offers significantly broader content coverage.
 * Key Metrics:
   1. Jotstar Content → 2,360
@@ -250,10 +250,15 @@ FROM liocinema\_db.contents;
 
 ##### **1) Work on AGE GROUP:**
 SELECT 
+
 &#x20;   age\_group,
+
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user,
+
 &#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
+
 &#x20;   (SELECT COUNT(DISTINCT user\_id) 
+
 &#x20;   FROM jotstar\_db.subscribers),2) AS age\_group\_user\_percentage
 FROM jotstar\_db.subscribers
 GROUP BY age\_group;
@@ -261,9 +266,13 @@ GROUP BY age\_group;
 ##### **2)Work on City Tier:**
 SELECT 
 &#x20;   city\_tier,
+
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_city\_tier,
+
 &#x20;   ROUND(COUNT(DISTINCT user\_id)\*100/
+
 &#x20;   (SELECT COUNT(DISTINCT user\_id) 
+
 &#x20;   FROM jotstar\_db.subscribers),2) AS city\_tier\_user\_percentage
 FROM jotstar\_db.subscribers
 GROUP BY city\_tier;
