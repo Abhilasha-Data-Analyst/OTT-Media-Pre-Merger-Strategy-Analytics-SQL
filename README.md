@@ -193,10 +193,10 @@ from jotstar\_db.content\_consumption;
 
 #### **SQL Script LioCinema:**
 select COUNT(DISTINCT user\_id)
+
 from liocinema\_db.content\_consumption;
 
-### **Data Driven Insights:
-👥 1. LioCinema Leads in User Acquisition
+### **Data Driven Insights:👥 1. LioCinema Leads in User Acquisition
 
 * User analysis revealed a significant difference in platform scale.
 * Key Metrics:
