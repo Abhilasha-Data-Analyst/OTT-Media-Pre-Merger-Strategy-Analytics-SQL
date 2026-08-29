@@ -647,6 +647,7 @@ FROM liocinema\_db.content\_consumption c
 * The relationship is meaningful but not definitive, indicating other factors also play a role.
 * Higher watch time was associated with lower inactivity on both platforms.
 * Low engagement is a good indicator of possible churn, but not the only reason, Other factors like content type, genre, and subscription plan also affect inactivity
+
 👉 **Business Insight:** Watch time can serve as an early indicator of potential customer churn.
 
 ### 
