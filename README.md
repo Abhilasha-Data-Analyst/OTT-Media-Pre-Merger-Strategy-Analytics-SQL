@@ -187,12 +187,14 @@ The management team requires a detailed analysis of both OTT Platform to support
 
 
 #### **SQL Script Jotstar:**
+
 select COUNT(DISTINCT user\_id)
 
 from jotstar\_db.content\_consumption;
 
 
 #### **SQL Script LioCinema:**
+
 select COUNT(DISTINCT user\_id)
 
 from liocinema\_db.content\_consumption;
@@ -212,6 +214,7 @@ from liocinema\_db.content\_consumption;
 ### **Q2. Content Library Comparison-What is the total number of contents available on LioCinema vs. Jotstar? How do they differ in terms of language and content type?**
 
 #### **SQL Script Jotstar:**
+
 SELECT
 
 COUNT(DISTINCT content\_id) AS unique\_content\_ids,
@@ -222,8 +225,8 @@ COUNT(DISTINCT language) AS unique\_languages
 
 FROM jotstar\_db.contents;
 
-#### **SQL Script LioCinema:**
-##### 
+#### **SQL Script LioCinema:** 
+
 SELECT
 
 &#x20;   COUNT(DISTINCT content\_id) AS unique\_content\_ids,
@@ -253,7 +256,7 @@ FROM liocinema\_db.contents;
 #### **SQL Script Jotstar:**
 
 ##### **1) Work on AGE GROUP:**
-#####
+
 SELECT age\_group,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user,
@@ -267,6 +270,7 @@ FROM jotstar\_db.subscribers
 GROUP BY age\_group;
 
 ##### **2)Work on City Tier:**
+
 SELECT city\_tier,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_city\_tier,
@@ -281,6 +285,7 @@ GROUP BY city\_tier;
 
 
 ##### **3)Work Subscription Plan:**
+
 SELECT subscription\_plan,
 
 &#x20;   COUNT(DISTINCT user\_id) AS total\_user\_subscription\_plan,
@@ -358,6 +363,7 @@ GROUP BY subscription\_plan;
 
 #### **SQL Script Jotstar:**
 ##### **(1) Active vs. Inactive Users (Overall)**
+
 SELECT
 
 COUNT(DISTINCT user\_id),
@@ -371,6 +377,7 @@ ROUND(COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END)\*10
 FROM jotstar\_db.subscribers;
 
 ##### **(2) Rates vary by age group**
+
 SELECT age\_group,
 
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
@@ -388,6 +395,7 @@ GROUP BY age\_group
 ORDER BY age\_group;
 
 ##### **(3) Rates vary by subscription plan**
+
 SELECT subscription\_plan,
 
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
@@ -408,6 +416,7 @@ ORDER BY subscription\_plan;
 #### **SQL Script LioCinema:**
 
 ##### **(1) Active vs. Inactive Users (Overall)**
+
 SELECT
 
 COUNT(DISTINCT user\_id),
@@ -422,6 +431,7 @@ FROM liocinema\_db.subscribers;
 
 
 ##### **(2) Rates vary by age group**
+
 SELECT age\_group,
 
 COUNT(DISTINCT CASE WHEN last\_active\_date IS NULL THEN user\_id END) AS active\_users,
@@ -474,6 +484,7 @@ ORDER BY subscription\_plan;
 #### 
 #### **SQL Script Jotstar:**
 ##### **(1) Overall Average Watchtime**
+
 SELECT 
 
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
@@ -483,6 +494,7 @@ ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
 FROM jotstar\_db.content\_consumption;
 
 ##### **(2)** **Average Watchtime by Device Type**
+
 SELECT device\_type,
 
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
@@ -509,6 +521,7 @@ GROUP BY city\_tier;
 
 #### **SQL Script LioCinema:**
 ##### **(1) Overall Average Watchtime**
+
 SELECT
 
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
@@ -518,6 +531,7 @@ ROUND(AVG(total\_watch\_time\_mins)/60,2) AS avg\_watch\_time\_Hours
 FROM liocinema\_db.content\_consumption;
 
 ##### **(2)** **Average Watchtime by Device Type**
+
 SELECT device\_type,
 
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
@@ -529,6 +543,7 @@ FROM liocinema\_db.content\_consumption
 GROUP BY device\_type;
 
 ##### **(3)** **Average Watchtime by City Tier**
+
 SELECT s.city\_tier,
 
 ROUND(AVG(total\_watch\_time\_mins),2) AS avg\_watch\_time,
@@ -558,6 +573,7 @@ GROUP BY city\_tier;
 ### **Q6. Inactivity Correlation-How do inactivity patterns correlate with total watch time or average watch time? Are less engaged users more likely to become inactive?**
 
 #### **SQL Script Jotstar:**
+
 SELECT 
 
 COUNT(\*) AS total\_users,
@@ -582,6 +598,7 @@ GROUP BY s.user\_id, s.last\_active\_date) t;
 
 
 ##### **(\*)Correlation** 
+
 SELECT
 
 ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins)\*AVG(inactivity\_flag))/STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value
@@ -602,6 +619,7 @@ GROUP BY s.user\_id, s.last\_active\_date) t;
 
 
 #### **SQL Script LioCinema:**
+
 SELECT 
 COUNT(\*) AS total\_users,
 
@@ -623,6 +641,7 @@ ON c.user\_id = s.user\_id
 
 
 ###### **(\*)Correlation**
+
 SELECT 
 
 ROUND((AVG(total\_watch\_time\_mins \* inactivity\_flag)-AVG(total\_watch\_time\_mins) \* AVG(inactivity\_flag))/(STDDEV(total\_watch\_time\_mins) \* STDDEV(inactivity\_flag)),2) AS correlation\_value FROM(SELECT s.user\_id,
@@ -655,6 +674,7 @@ FROM liocinema\_db.content\_consumption c
 ### **Q7. Downgrade Trends-How do downgrade trends differ between LioCinema and Jotstar? Are downgrades more prevalent on one platform compared to the other?** 
 
 #### **SQL Script Jotstar:**
+
 SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
 
 &#x20;   COUNT(DISTINCT user\_id) AS downgrade\_users FROM jotstar\_db.subscribers
@@ -668,6 +688,7 @@ ORDER BY downgrade\_users DESC**;**
 #### 
 
 #### **SQL Script LioCinema:**
+
 SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
 
 COUNT(DISTINCT user\_id) AS downgrade\_users
@@ -698,6 +719,7 @@ ORDER BY downgrade\_users DESC;
 ### **Q8. Upgrade Patterns-What are the most common upgrade transitions (e.g., Free to Basic, Free to VIP, Free to Premium)for LioCinema and Jotstar? How do these differ across platforms?**
 
 #### **SQL Script Jotstar:**
+
 SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
 
 COUNT(DISTINCT user\_id) AS users\_upgraded,
@@ -717,6 +739,7 @@ GROUP BY subscription\_plan, new\_subscription\_plan
 ORDER BY users\_upgraded DESC;
 
 #### **SQL Script LioCinema:**
+
 SELECT subscription\_plan AS from\_plan, new\_subscription\_plan AS to\_plan,
 
 COUNT(DISTINCT user\_id) AS users\_upgraded,
@@ -748,6 +771,7 @@ ORDER BY users\_upgraded DESC;
 ### **Q9. Paid Users Distribution-How does the paid user% age (e.g., Basic, Premium for LioCinema; VIP, Premium for Jotstar) vary across different platforms? Analyse the proportion of premium users in Tier 1, Tier 2, and Tier 3 cities and identify any notable trends or differences.**
 
 #### **SQL Script Jotstar:**
+
 SELECT city\_tier,
    
 COUNT(DISTINCT user\_id) AS total\_users,
@@ -829,9 +853,11 @@ GREATEST(subscription\_date, '2024-01-01') AS start\_before,
 LEAST(COALESCE(plan\_change\_date, effective\_end\_date), effective\_end\_date) AS end\_before,
 
 **-- Period after plan change**
+
 plan\_change\_date AS start\_after, effective\_end\_date AS end\_after FROM base\_data),
 
 **-- STEP 3: Calculate duration (in months) spent in each plan**
+
 revenue\_calc AS(SELECT user\_id,
 
 &#x20;CASE WHEN start\_before < end\_before THEN TIMESTAMPDIFF(MONTH, start\_before, end\_before) ELSE 0 END AS months\_before,
@@ -847,7 +873,6 @@ SELECT
 &#x20;   COUNT(DISTINCT user\_id) AS total\_subscribers,
 
 &#x20;   ROUND((SUM(months\_before\*CASE subscription\_plan WHEN 'VIP' THEN 159 WHEN 'Premium' THEN 359 ELSE 0 END) +
-
 SUM(months\_after\*CASE new\_subscription\_plan WHEN 'VIP' THEN 159 WHEN 'Premium' THEN 359 ELSE 0 END))/1000000,2) AS total\_revenue\_millions FROM revenue\_calc;
 
 #### 
